@@ -1,0 +1,44 @@
+#logging
+logging:
+  level:
+    org.springframework.jdbc.datasource.init.ScriptUtils: debug
+    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: error
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  #security
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://auth:8080/auth/realms/rvpark/protocol/openid-connect/certs
+  # Database
+  datasource:
+    hikari:
+      max-lifetime: 120000
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_SERVER}:${DB_PORT:5432}/${DB_DATABASE:rvpark}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  # jpa properties
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      #do not do any ddl on the database
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        generate-ddl: true
+        format_sql: true
